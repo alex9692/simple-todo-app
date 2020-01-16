@@ -3,25 +3,27 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+const INITIAL_DATA = [
+  {
+    _id: '1',
+    title: 'Walk the dog',
+    description: 'Go to the forest near the zoo'
+  },
+  {
+    _id: '2',
+    title: 'Buy grocery',
+    description: 'Bread, tomatoes and potatoes'
+  },
+  {
+    _id: '3',
+    title: 'Learn coding',
+    description: 'Tomorrow learn VueJs'
+  }
+];
+
 export default new Vuex.Store({
   state: {
-    list: [
-      {
-        _id: '1',
-        title: 'Walk the dog',
-        description: 'Go to the forest near the zoo'
-      },
-      {
-        _id: '2',
-        title: 'Buy grocery',
-        description: 'Bread, tomatoes and potatoes'
-      },
-      {
-        _id: '3',
-        title: 'Learn coding',
-        description: 'Tomorrow learn VueJs'
-      }
-    ],
+    list: [],
     modalOpen: false
   },
   mutations: {
@@ -41,21 +43,36 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    initStore: ({ state }) => {
+      const list = JSON.parse(localStorage.getItem('todos'));
+      if (list) {
+        state.list = [...list];
+      } else {
+        localStorage.setItem('todos', JSON.stringify(INITIAL_DATA));
+        state.list = [...INITIAL_DATA];
+      }
+    },
+    saveTodos: ({ state }) => {
+      localStorage.setItem('todos', JSON.stringify(state.list));
+    },
     openModalWindow: ({ commit }) => {
       commit('toggleModalWindow', true);
     },
     closeModalWindow: ({ commit }) => {
       commit('toggleModalWindow', false);
     },
-    addTodo: ({ commit }, payload) => {
+    addTodo: ({ commit, dispatch }, payload) => {
       commit('addTodo', payload);
       commit('toggleModalWindow', false);
+      dispatch('saveTodos');
     },
-    updateTodo: ({ commit }, payload) => {
+    updateTodo: ({ commit, dispatch }, payload) => {
       commit('updateTodo', payload);
+      dispatch('saveTodos');
     },
-    deleteTodo: ({ commit }, payload) => {
+    deleteTodo: ({ commit, dispatch }, payload) => {
       commit('deleteTodo', payload);
+      dispatch('saveTodos');
     }
   },
   getters: {

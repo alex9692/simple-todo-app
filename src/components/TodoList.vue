@@ -10,7 +10,7 @@
 				:id="item._id"
 			></app-todo-item>
 		</div>
-		<div v-else class="empty-list">Sorry,there are no todos left.Get started by clicking on the create button</div>
+		<div v-else class="empty-list">No todos :( Let's create one!</div>
 	</div>
 </template>
 
@@ -34,10 +34,9 @@
 		flex: 1;
 	}
 	.empty-list {
-		padding: 10px;
-		margin: 10px;
-		border-radius: 5px;
-		background-color: gray;
-		color: #ccc;
+		padding: 20px;
+		text-align: center;
+		font-size: 23px;
+		font-weight: bold;
 	}
 </style>

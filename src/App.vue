@@ -51,7 +51,7 @@
 		}
 		&-container {
 			width: 400px;
-			min-height: 400px;
+			min-height: 200px;
 			background-color: $color-gray;
 			border-radius: 5px;
 			display: flex;
