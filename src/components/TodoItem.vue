@@ -18,13 +18,12 @@
 				</form>
 			</div>
 		</div>
-		<button @click="editTodo" class="app-btn is-warning">{{editState ? 'Update': 'Edit'}}</button>
+		<button @click="updateTodo" class="app-btn is-warning">{{editState ? 'Update': 'Edit'}}</button>
 		<button @click="deleteTodo" class="app-btn is-danger">{{editState ? 'Cancel': 'Delete'}}</button>
 	</div>
 </template>
 
 <script>
-	import { EventBus } from "@/main.js";
 	export default {
 		props: ["title", "description", "id"],
 		data() {
@@ -35,7 +34,7 @@
 			};
 		},
 		methods: {
-			editTodo() {
+			updateTodo() {
 				if (this.editState) {
 					if (
 						this.updatedTitle.trim().length <= 4 ||
@@ -43,7 +42,7 @@
 					) {
 						return;
 					}
-					this.$emit("update", {
+					this.$store.dispatch("updateTodo", {
 						id: this.id,
 						title: this.updatedTitle,
 						description: this.updatedDescription
@@ -57,7 +56,7 @@
 				if (this.editState) {
 					this.editState = false;
 				} else {
-					EventBus.$emit("delete", this.id);
+					this.$store.dispatch("deleteTodo", this.id);
 				}
 			}
 		}

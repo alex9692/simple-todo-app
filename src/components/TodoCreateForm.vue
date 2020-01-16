@@ -11,11 +11,12 @@
 		<div class="app-error">
 			<div class="form-error">{{errorMessage}}</div>
 		</div>
-		<button type="button" @click="confirmCreate" class="app-btn is-primary">Confirm</button>
+		<button type="button" @click="confirmCreateTodo" class="app-btn is-primary">Confirm</button>
 	</form>
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
 	export default {
 		data() {
 			return {
@@ -24,8 +25,11 @@
 				errorMessage: ""
 			};
 		},
+		computed: {
+			...mapGetters(["newId"])
+		},
 		methods: {
-			confirmCreate() {
+			confirmCreateTodo() {
 				if (
 					this.title.trim().length <= 8 ||
 					this.description.trim().length <= 10
@@ -34,7 +38,8 @@
 						"Invalid form inputs!\n Title must be greater than 8 characters & description must be greater than 10 characters";
 					return;
 				}
-				this.$emit("createTodo", {
+				this.$store.dispatch("addTodo", {
+					_id: this.newId,
 					title: this.title,
 					description: this.description
 				});

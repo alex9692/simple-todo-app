@@ -1,18 +1,22 @@
 <template>
-	<div class="modal" :style="isActive ? {display:'block'} : {display:'none'}">
+	<div class="modal" :style="modalOpen ? {display:'block'} : {display:'none'}">
 		<div class="modal-content">
-			<span class="close" @click="closeModal">&times;</span>
+			<span class="close" @click="closeModalWindow">&times;</span>
 			<slot></slot>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapState } from "vuex";
+	
 	export default {
-		props: ["isActive"],
+		computed: {
+			...mapState(["modalOpen"])
+		},
 		methods: {
-			closeModal() {
-				this.$emit("close");
+			closeModalWindow() {
+				this.$store.dispatch("closeModalWindow");
 			}
 		}
 	};

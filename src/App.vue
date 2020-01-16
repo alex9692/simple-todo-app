@@ -2,8 +2,8 @@
 	<div id="app">
 		<div class="todo-wrapper">
 			<div class="todo-container">
-				<app-todo-list @updateTodo="updateList" :list="list"></app-todo-list>
-				<app-todo-create @add="addTodo"></app-todo-create>
+				<app-todo-list :list="list"></app-todo-list>
+				<app-todo-create></app-todo-create>
 			</div>
 		</div>
 	</div>
@@ -12,48 +12,15 @@
 <script>
 	import TodoList from "@/components/TodoList";
 	import TodoCreate from "@/components/TodoCreate";
-	import { EventBus } from "@/main.js";
+	import { mapState } from "vuex";
+
 	export default {
 		components: {
 			"app-todo-list": TodoList,
 			"app-todo-create": TodoCreate
 		},
-		data() {
-			return {
-				list: [
-					{
-						_id: "1",
-						title: "Walk the dog",
-						description: "Go to the forest near the zoo"
-					},
-					{
-						_id: "2",
-						title: "Buy grocery",
-						description: "Bread, tomatoes and potatoes"
-					},
-					{
-						_id: "3",
-						title: "Learn coding",
-						description: "Tomorrow learn VueJs"
-					}
-				]
-			};
-		},
-		methods: {
-			addTodo(data) {
-				this.list.push(data);
-			},
-			updateList(data) {
-				const index = this.list.findIndex(el => el._id === data.id);
-				this.list[index].title = data.title;
-				this.list[index].description = data.description;
-			}
-		},
-		created() {
-			EventBus.$on("delete", id => {
-				const index = this.list.findIndex(el => el._id === id);
-				this.list.splice(index, 1);
-			});
+		computed: {
+			...mapState(["list"])
 		}
 	};
 </script>

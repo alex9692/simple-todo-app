@@ -1,29 +1,28 @@
 <template>
 	<div class="todo-create-btn-container">
-		<div @click="isActive=true" class="todo-button">Create</div>
-		<app-modal @close="isActive=false" :isActive="isActive">
-            <app-form @createTodo="confirmCreate"></app-form>
-        </app-modal>
+		<div @click="openModalWindow" class="todo-button">Create</div>
+		<app-modal>
+			<app-form></app-form>
+		</app-modal>
 	</div>
 </template>
 
 <script>
 	import Modal from "@/components/Modal";
 	import Form from "@/components/TodoCreateForm";
+	import { mapState } from "vuex";
+	
 	export default {
 		components: {
 			"app-modal": Modal,
 			"app-form": Form
 		},
-		data() {
-			return {
-				isActive: false
-			};
+		computed: {
+			...mapState(["modalOpen"])
 		},
 		methods: {
-			confirmCreate(data) {
-                this.isActive = false;
-                this.$emit('add',data);
+			openModalWindow() {
+				this.$store.dispatch("openModalWindow");
 			}
 		}
 	};
