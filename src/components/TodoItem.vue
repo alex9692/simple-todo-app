@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<button @click="editTodo" class="app-btn is-warning">{{editState ? 'Update': 'Edit'}}</button>
-		<button v-if="editState" @click="deleteTodo" class="app-btn is-danger">Delete</button>
+		<button @click="deleteTodo" class="app-btn is-danger">{{editState ? 'Cancel': 'Delete'}}</button>
 	</div>
 </template>
 
@@ -54,8 +54,11 @@
 				}
 			},
 			deleteTodo() {
-				EventBus.$emit("delete", this.id);
-				this.editState = false;
+				if (this.editState) {
+					this.editState = false;
+				} else {
+					EventBus.$emit("delete", this.id);
+				}
 			}
 		}
 	};
